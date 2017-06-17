@@ -16,12 +16,17 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D rgBody;
     private Animator anim;
 
+    private int highScore;
+    private int score;
+
     private GameManagerBehavior gameManager;
 
     private List<int> listScore = new List<int>();
 
     private void Start()
     {
+        highScore = PlayerPrefs.GetInt("HIGH_SCORE", 0);
+
         rgBody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
@@ -68,11 +73,17 @@ public class PlayerController : MonoBehaviour {
 
     public void Die()
     {
-        listScore.Add(gameManager.Score);
-        PlayerPrefs.SetInt("LIST_SCORE_COUNT", listScore.Count);
-        for(int i = 0; i < listScore.Count; i++)
+        //listScore.Add(gameManager.Score);
+        //PlayerPrefs.SetInt("LIST_SCORE_COUNT", listScore.Count);
+        //for(int i = 0; i < listScore.Count; i++)
+        //{
+        //    PlayerPrefs.SetInt("SCORE" + i, gameManager.Score);
+        //}
+        score = gameManager.Score;
+        PlayerPrefs.SetInt("SCORE", score);
+        if(score > highScore)
         {
-            PlayerPrefs.SetInt("SCORE" + i, gameManager.Score);
+            PlayerPrefs.SetInt("HIGH_SCORE", score);
         }
         SceneManager.LoadScene("GameOverScene");
     }
